@@ -36,12 +36,12 @@ Image {
         }
     }
     Rectangle {
-        radius: 3
+        radius: 4
         color: "#ffffff"
         anchors.centerIn: parent
         anchors.horizontalCenterOffset: 0
         anchors.verticalCenterOffset: parent.height / 4
-        height: 8
+        height: 16
         width: height*32
         Rectangle {
             radius: 3

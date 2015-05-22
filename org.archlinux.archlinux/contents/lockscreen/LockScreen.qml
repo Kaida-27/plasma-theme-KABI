@@ -34,13 +34,25 @@ Image {
     property UserSelect userSelect: null
     signal clearPassword()
 
-    source: backgroundPath || "../components/artwork/background.png"
-    fillMode: Image.PreserveAspectCrop
+    source: "../loginmanager/images/background.png"
+    fillMode: Image.Stretch
 
     onStatusChanged: {
         if (status == Image.Error) {
-            source = "../components/artwork/background.png";
+            source = "../loginmanager/images/background.png";
         }
+    }
+
+    Image {
+        id: archlinux
+        width: 450
+        height: 150
+        anchors.centerIn: parent
+        anchors.verticalCenterOffset: -75
+        anchors.horizontalCenterOffset: 0
+        fillMode: Image.PreserveAspectFit
+        transformOrigin: Item.Center
+        source: "../loginmanager/images/archlinux.png"
     }
 
     Connections {
