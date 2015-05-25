@@ -85,11 +85,9 @@ BreezeBlock {
 
         PlasmaComponents.ProgressBar {
             id: progressBar
-            Layout.alignment: Qt.AlignHCenter
             anchors.horizontalCenter: parent.horizontalCenter
-
-            //wanted to use actionIcon.paintedWidth but it doesn't work well when the image changes
-            width: units.largeSpacing*7
+            height: 8
+            width: height * 32
             minimumValue: 0
             maximumValue: root.timeout
             value: root.remainingTime

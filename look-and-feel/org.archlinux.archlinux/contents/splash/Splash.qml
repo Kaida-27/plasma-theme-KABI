@@ -42,9 +42,9 @@ Image {
         anchors.horizontalCenterOffset: 0
         anchors.verticalCenterOffset: parent.height / 4
         height: 16
-        width: height*32
+        width: height * 32
         Rectangle {
-            radius: 3
+            radius: 4
             anchors {
                 left: parent.left
                 top: parent.top
