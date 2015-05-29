@@ -23,7 +23,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.1
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.kscreenlocker 1.0
+//import org.kde.kscreenlocker 1.0
 import org.kde.plasma.workspace.keyboardlayout 1.0
 import "../components"
 
@@ -34,25 +34,13 @@ Image {
     property UserSelect userSelect: null
     signal clearPassword()
 
-    source: "../loginmanager/images/background.png"
-    fillMode: Image.Stretch
+    source: "../components/artwork/background.png"
+    fillMode: Image.PreserveAspectCrop
 
     onStatusChanged: {
         if (status == Image.Error) {
-            source = "../loginmanager/images/background.png";
+            source = "../components/artwork/background.png";
         }
-    }
-
-    Image {
-        id: archlinux
-        width: 450
-        height: 150
-        anchors.centerIn: parent
-        anchors.verticalCenterOffset: -75
-        anchors.horizontalCenterOffset: 0
-        fillMode: Image.PreserveAspectFit
-        transformOrigin: Item.Center
-        source: "../loginmanager/images/archlinux.png"
     }
 
     Connections {
@@ -86,11 +74,11 @@ Image {
 
     StackView {
         id: stackView
-        width: parent.width
-        height: 201
+        width: 400
+        height: 200
         anchors.centerIn: parent
         anchors.horizontalCenterOffset: 0
-        anchors.verticalCenterOffset: 26 + (parent.height * 0.2)
+        anchors.verticalCenterOffset: parent.height * 0.25
 
         initialItem: BreezeBlock {
             id: block
