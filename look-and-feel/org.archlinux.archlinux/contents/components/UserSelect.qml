@@ -78,10 +78,9 @@ FocusScope {
     PlasmaComponents.Label {
         id: notificationLabel
         anchors {
-            top: usersList.bottom
-            bottom: parent.bottom
+            top: parent.bottom
             horizontalCenter: parent.horizontalCenter
-            margins: 16
+            margins: 60
         }
 
         width: usersList.userItemWidth * 3 //don't pass the infoPane
