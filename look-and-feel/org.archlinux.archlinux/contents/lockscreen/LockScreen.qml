@@ -23,7 +23,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.1
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.core 2.0 as PlasmaCore
-//import org.kde.kscreenlocker 1.0
+import org.kde.kscreenlocker 1.0
 import org.kde.plasma.workspace.keyboardlayout 1.0
 import "../components"
 
@@ -74,13 +74,13 @@ Image {
 
     StackView {
         id: stackView
-        width: 400
+        width: 420
         height: 200
         anchors.centerIn: parent
         anchors.horizontalCenterOffset: 0
         anchors.verticalCenterOffset: parent.height * 0.25
 
-        initialItem: BreezeBlock {
+        initialItem: ArchBlock {
             id: block
             main: UserSelect {
                 id: usersSelection
@@ -199,7 +199,7 @@ Image {
                                     sessions.startNewSession();
                                     break;
                                 case "changeSession":
-                                    stackView.push(changeSessionComponent)
+                                    stackView.push({item:changeSessionComponent, immediate: true})
                                     break;
                             }
                         }
@@ -222,11 +222,11 @@ Image {
 
                 Component {
                     id: changeSessionComponent
-                    BreezeBlock {
+                    ArchBlock {
                         id: selectSessionBlock
 
                         Action {
-                            onTriggered: stackView.pop()
+                            onTriggered: stackView.pop({immediate: true})
                             shortcut: "Escape"
                         }
 
@@ -239,7 +239,6 @@ Image {
                                 userName: model.session
                                 iconSource: "user-identity"
                                 width: ListView.view.userItemWidth
-                                height: ListView.view.userItemHeight
                                 faceSize: ListView.view.userFaceSize
 
                                 onClicked: {
@@ -255,7 +254,7 @@ Image {
                                 anchors.centerIn: parent
                                 PlasmaComponents.Button {
                                     text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Cancel")
-                                    onClicked: stackView.pop()
+                                    onClicked: stackView.pop({immediate: true})
                                 }
                                 PlasmaComponents.Button {
                                     text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Change Session")

@@ -43,6 +43,7 @@ Item {
         NumberAnimation { duration: 250 }
     }
 
+
     Item {
         id: imageWrapper
         anchors {
@@ -100,7 +101,7 @@ Item {
         }
     }
 
-    BreezeLabel {
+    PlasmaComponents.Label {
         id: loginText
         anchors {
             bottom: parent.bottom
@@ -115,6 +116,7 @@ Item {
         //make an indication that this has active focus, this only happens when reached with text navigation
         font.underline: wrapper.activeFocus
         height: Math.round(Math.max(paintedHeight, theme.mSize(theme.defaultFont).height*1.2))
+        color: "#ffffff"
     }
 
     MouseArea {

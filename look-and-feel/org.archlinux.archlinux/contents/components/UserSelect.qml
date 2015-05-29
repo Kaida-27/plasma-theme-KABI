@@ -41,15 +41,6 @@ FocusScope {
         usersList.decrementCurrentIndex()
     }
 
-    InfoPane {
-        id: infoPane
-        anchors {
-            verticalCenter: usersList.verticalCenter
-//            right: usersList.left
-            left: parent.left
-        }
-    }
-
     UserList {
         id: usersList
 
@@ -84,13 +75,13 @@ FocusScope {
         }
     }
 
-    BreezeLabel {
+    PlasmaComponents.Label {
         id: notificationLabel
         anchors {
             top: usersList.bottom
             bottom: parent.bottom
             horizontalCenter: parent.horizontalCenter
-            margins: units.largeSpacing
+            margins: 16
         }
 
         width: usersList.userItemWidth * 3 //don't pass the infoPane
@@ -98,7 +89,7 @@ FocusScope {
         verticalAlignment: Text.AlignVCenter
         maximumLineCount: 1
         wrapMode: Text.Wrap
-
+        color: "#ffffff"
         font.weight: Font.Bold
     }
 }
