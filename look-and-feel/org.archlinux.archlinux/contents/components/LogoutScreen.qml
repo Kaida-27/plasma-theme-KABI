@@ -20,6 +20,7 @@
 import QtQuick 2.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.3 as Controls
+import QtQuick.Controls.Styles 1.3
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
@@ -60,26 +61,16 @@ Item {
         spacing: 0
         anchors.horizontalCenter: root.horizontalCenter
         anchors.bottom : progressBar.top
-        anchors.margins : 20
-        PlasmaExtras.Heading {
-            level: 4
-            color: "#ffffff"
-            id: actionLabel
-            Layout.alignment: Qt.AlignHCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-        }
-
-        Item { height: 18 }
+        anchors.margins : 10
 
         PlasmaCore.IconItem {
             id: actionIcon
             Layout.alignment: Qt.AlignHCenter
-            Layout.fillHeight: true
+            Layout.preferredHeight: 120
             Layout.minimumWidth: height
             Layout.maximumWidth: height
             anchors.horizontalCenter: parent.horizontalCenter
-            colorGroup: PlasmaCore.ColorScope.colorGroup
-            opacity: actionIconMouse.containsMouse ? 1 : 0.7
+            opacity: 1
             MouseArea {
                 id: actionIconMouse
                 hoverEnabled: true
@@ -88,11 +79,22 @@ Item {
             }
         }
 
-        PlasmaComponents.Label {
-            anchors.horizontalCenter: progressBar.horizontalCenter
-            text: i18ndp("plasma_lookandfeel_org.kde.lookandfeel", "in 1 second", "in %1 seconds", root.remainingTime);
-            color: "#ffffff"
+/*        Row {
+            spacing: 0
+            PlasmaComponents.Label {
+                color: "#ffffff"
+                id: actionLabel
+            }
+            PlasmaComponents.Label {
+                color: "#ffffff"
+                text: " "
+            }
+                PlasmaComponents.Label {
+                text: i18ndp("plasma_lookandfeel_org.kde.lookandfeel", "in 1 second", "in %1 seconds", root.remainingTime);
+                color: "#ffffff"
+            }
         }
+*/
 
         state: mode
         states: [
@@ -117,7 +119,7 @@ Item {
         ]
     }
 
-    PlasmaComponents.ProgressBar {
+    Controls.ProgressBar {
         id: progressBar
         anchors.centerIn: root
         anchors.horizontalCenterOffset: 0
@@ -127,6 +129,19 @@ Item {
         minimumValue: 0
         maximumValue: root.timeout
         value: root.remainingTime
+        style: ProgressBarStyle {
+            background: Rectangle {
+                radius: 4
+                color: "#ffffff"
+                implicitHeight: 16
+                implicitWidth: implicitHeight * 32
+            }
+            progress: Rectangle {
+                radius: 4
+                color: "#1793d1"
+            }
+        }
+
     }
 
     Item {
