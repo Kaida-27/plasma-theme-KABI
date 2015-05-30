@@ -19,13 +19,13 @@
 
 import QtQuick 2.1
 import QtQuick.Layouts 1.1
-import QtQuick.Controls 1.1 as Controls
+import QtQuick.Controls 1.3 as Controls
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 
-BreezeBlock {
+Item {
     id: root
     property string mode: "shutdown"
     property var currentAction
@@ -56,9 +56,14 @@ BreezeBlock {
         onTriggered: remainingTime--
     }
 
-    main: ColumnLayout {
+    ColumnLayout {
         spacing: 0
-        BreezeHeading {
+        anchors.horizontalCenter: root.horizontalCenter
+        anchors.bottom : progressBar.top
+        anchors.margins : 20
+        PlasmaExtras.Heading {
+            level: 4
+            color: "#ffffff"
             id: actionLabel
             Layout.alignment: Qt.AlignHCenter
             anchors.horizontalCenter: parent.horizontalCenter
@@ -83,19 +88,10 @@ BreezeBlock {
             }
         }
 
-        PlasmaComponents.ProgressBar {
-            id: progressBar
-            anchors.horizontalCenter: parent.horizontalCenter
-            height: 8
-            width: height * 32
-            minimumValue: 0
-            maximumValue: root.timeout
-            value: root.remainingTime
-        }
-
-        BreezeLabel {
+        PlasmaComponents.Label {
             anchors.horizontalCenter: progressBar.horizontalCenter
             text: i18ndp("plasma_lookandfeel_org.kde.lookandfeel", "in 1 second", "in %1 seconds", root.remainingTime);
+            color: "#ffffff"
         }
 
         state: mode
@@ -121,8 +117,22 @@ BreezeBlock {
         ]
     }
 
-    controls: Item {
-        Layout.fillWidth: true
+    PlasmaComponents.ProgressBar {
+        id: progressBar
+        anchors.centerIn: root
+        anchors.horizontalCenterOffset: 0
+        anchors.verticalCenterOffset: parent.height * 0.25
+        height: 16
+        width: height * 32
+        minimumValue: 0
+        maximumValue: root.timeout
+        value: root.remainingTime
+    }
+
+    Item {
+        anchors.horizontalCenter: root.horizontalCenter
+        anchors.top : progressBar.bottom
+        anchors.margins : 20
         height: buttons.height
 
         RowLayout {

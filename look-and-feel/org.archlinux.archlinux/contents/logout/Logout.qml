@@ -19,6 +19,8 @@
 
 import QtQuick 2.2
 import QtQuick.Window 2.2
+import QtQuick.Layouts 1.1
+import QtQuick.Controls 1.3 as Controls
 import "../components"
 
 Item {
@@ -34,12 +36,24 @@ Item {
     signal cancelRequested()
     signal lockScreenRequested()
 
+    Image {
+        height: parent.height
+        width: parent.width
+        source: "../components/artwork/background.png"
+        fillMode: Image.PreserveAspectCrop
+
+        onStatusChanged: {
+            if (status == Image.Error) {
+                source = "../components/artwork/background.png";
+            }
+        }
+
+        opacity: 0.7
+    }
+
     LogoutScreen {
-        width: root.width
-        height: 201
-        anchors.centerIn: parent
-        anchors.horizontalCenterOffset: 0
-        anchors.verticalCenterOffset: 26 + (root.height * 0.2)
+        height: screenGeometry.height
+        width: screenGeometry.width
 
         mode: switch (sdtype) {
             case ShutdownType.ShutdownTypeNone:
