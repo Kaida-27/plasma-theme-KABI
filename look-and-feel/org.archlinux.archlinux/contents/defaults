@@ -2,19 +2,19 @@
 widgetStyle=breeze
 
 [kdeglobals][General]
-ColorScheme=Breeze
+ColorScheme=Archlinux
 
 [kdeglobals][Icons]
 Theme=breeze
 
 [plasmarc][Theme]
-name=breeze-dark
+name=archlinux
 
 [kcminputrc][Mouse]
 cursorTheme=breeze_cursors
 
 [kwinrc][WindowSwitcher]
-LayoutName=org.kde.breeze.desktop
+LayoutName=org.archlinux.archlinux
 
 [kwinrc][DesktopSwitcher]
-LayoutName=org.kde.breeze.desktop
+LayoutName=org.archlinux.archlinux
