@@ -102,19 +102,19 @@ Item {
                 name: "shutdown"
                 PropertyChanges { target: root; currentAction: shutdownRequested }
                 PropertyChanges { target: actionLabel; text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Shutting down") }
-                PropertyChanges { target: actionIcon; source: "system-shutdown" }
+                PropertyChanges { target: actionIcon; source: "/usr/share/plasma/look-and-feel/org.archlinux.archlinux/contents/components/artwork/shutdown_primary.svgz" }
             },
             State {
                 name: "logout"
                 PropertyChanges { target: root; currentAction: logoutRequested }
                 PropertyChanges { target: actionLabel; text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Logging out") }
-                PropertyChanges { target: actionIcon; source: "system-log-out" }
+                PropertyChanges { target: actionIcon; source: "/usr/share/plasma/look-and-feel/org.archlinux.archlinux/contents/components/artwork/logout_primary.svgz" }
             },
             State {
                 name: "reboot"
                 PropertyChanges { target: root; currentAction: rebootRequested }
                 PropertyChanges { target: actionLabel; text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Rebooting") }
-                PropertyChanges { target: actionIcon; source: "system-reboot" }
+                PropertyChanges { target: actionIcon; source: "/usr/share/plasma/look-and-feel/org.archlinux.archlinux/contents/components/artwork/restart_primary.svgz" }
             }
         ]
     }
