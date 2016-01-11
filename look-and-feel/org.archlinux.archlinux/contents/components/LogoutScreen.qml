@@ -79,23 +79,6 @@ Item {
             }
         }
 
-/*        Row {
-            spacing: 0
-            PlasmaComponents.Label {
-                color: "#ffffff"
-                id: actionLabel
-            }
-            PlasmaComponents.Label {
-                color: "#ffffff"
-                text: " "
-            }
-                PlasmaComponents.Label {
-                text: i18ndp("plasma_lookandfeel_org.kde.lookandfeel", "in 1 second", "in %1 seconds", root.remainingTime);
-                color: "#ffffff"
-            }
-        }
-*/
-
         state: mode
         states: [
             State {
@@ -155,12 +138,15 @@ Item {
             anchors.centerIn: parent
 
             PlasmaComponents.Button {
+                id: cancelButton
+                Layout.preferredWidth: Math.max(commitButton.implicitWidth, cancelButton.implicitWidth)
                 text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Cancel")
                 onClicked: root.cancel()
             }
 
             PlasmaComponents.Button {
                 id: commitButton
+                Layout.preferredWidth: Math.max(commitButton.implicitWidth, cancelButton.implicitWidth)
                 onClicked: root.currentAction()
                 focus: true
 
