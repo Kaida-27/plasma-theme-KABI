@@ -17,26 +17,24 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
-import QtQuick 2.2
-import QtQuick.Window 2.2
-import QtQuick.Layouts 1.1
+import QtQuick 2.0
 import QtQuick.Controls 1.1
-import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.private.sessions 2.0
-// import org.kde.kscreenlocker 1.0
-import org.kde.plasma.workspace.keyboardlayout 1.0
 import "../components"
 
 Image {
     id: root
+    property bool viewVisible: falseBreeze
     property bool debug: false
     property string notification
     property UserSelect userSelect: null
+    property int interfaceVersion: org_kde_plasma_screenlocker_greeter_interfaceVersion ? org_kde_plasma_screenlocker_greeter_interfaceVersion : 0
     signal clearPassword()
 
     source: "../components/artwork/background.png"
     fillMode: Image.PreserveAspectCrop
+    asynchronous: true
 
     onStatusChanged: {
         if (status == Image.Error) {
@@ -44,11 +42,13 @@ Image {
         }
     }
 
+    LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
+    LayoutMirroring.childrenInherit: true
+
     Connections {
         target: authenticator
         onFailed: {
             root.notification = i18nd("plasma_lookandfeel_org.kde.lookandfeel","Unlocking failed");
-            root.clearPassword()
         }
         onGraceLockedChanged: {
             if (!authenticator.graceLocked) {
@@ -63,6 +63,7 @@ Image {
             root.notification = err;
         }
     }
+
     SessionsModel {
         id: sessionsModel
     }
@@ -73,6 +74,13 @@ Image {
         connectedSources: "Caps Lock"
     }
 
+    Loader {
+        id: changeSessionComponent
+        active: false
+        source: "ChangeSession.qml"
+        visible: false
+    }
+
     StackView {
         id: stackView
         width: 420
@@ -81,191 +89,26 @@ Image {
         anchors.horizontalCenterOffset: 0
         anchors.verticalCenterOffset: parent.height * 0.25
 
-        initialItem: ArchBlock {
-            id: block
-            main: UserSelect {
-                id: usersSelection
+        initialItem: Loader {
+            active: root.viewVisible
+            source: "MainBlock.qml"
+        }
+    }
 
-                onVisibleChanged: {
-                    if(visible) {
-                        currentIndex = 0;
-                    }
-                }
-                Component.onCompleted: root.userSelect = usersSelection
+    Loader {
+        active: root.viewVisible
+        source: "LockOsd.qml"
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            bottom: parent.bottom
+        }
+    }
 
-                notification: {
-                    var text = ""
-                    if (keystateSource.data["Caps Lock"]["Locked"]) {
-                        text += i18nd("plasma_lookandfeel_org.kde.lookandfeel","Caps Lock is on")
-                        if (root.notification) {
-                            text += " • "
-                        }
-                    }
-                    text += root.notification
-                    return text
-                }
-
-                model: ListModel {
-                    id: users
-
-                    Component.onCompleted: {
-                        users.append({  "name": kscreenlocker_userName,
-                                        "realName": kscreenlocker_userName,
-                                        "icon": kscreenlocker_userImage,
-                                        "showPassword": true,
-                                        "ButtonLabel": i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Unlock"),
-                                        "ButtonAction": "unlock"
-                        })
-                        if(sessionsModel.startNewSessionSupported) {
-                            users.append({  "realName": i18nd("plasma_lookandfeel_org.kde.lookandfeel", "New Session"),
-                                            "icon": "system-log-out", //TODO Need an icon for new session
-                                            "showPassword": false,
-                                            "ButtonLabel": i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Create Session"),
-                                            "ButtonAction": "newSession"
-                            })
-                        }
-                        if(sessionsModel.switchUserSupported) {
-                            users.append({  "realName": i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Change Session"),
-                                            "icon": "system-switch-user",
-                                            "showPassword": false,
-                                            "ButtonLabel": i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Change Session..."),
-                                            "ButtonAction": "changeSession"
-                            })
-                        }
-                    }
-                }
-            }
-
-            controls: Item {
-                height: childrenRect.height
-                Layout.fillWidth: true
-                function unlockFunction() {
-                    authenticator.tryUnlock(passwordInput.text);
-                }
-
-                ColumnLayout {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    RowLayout {
-                        anchors.horizontalCenter: parent.horizontalCenter
-
-                        KeyboardLayoutButton {}
-
-                        PlasmaComponents.TextField {
-                            id: passwordInput
-                            placeholderText: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Password")
-                            echoMode: TextInput.Password
-                            enabled: !authenticator.graceLocked
-                            onAccepted: unlockFunction()
-                            focus: true
-                            //HACK: Similar hack is needed in sddm loginscreen
-                            //TODO: investigate
-                            Timer {
-                                interval: 200
-                                running: true
-                                repeat: false
-                                onTriggered: passwordInput.forceActiveFocus()
-                            }
-                            visible: block.mainItem.model.get(block.mainItem.selectedIndex)["showPassword"]
-                            onVisibleChanged: {
-                                if (visible) {
-                                    forceActiveFocus();
-                                }
-                            }
-
-                            Keys.onLeftPressed: {
-                                if (text == "") {
-                                    root.userSelect.decrementCurrentIndex();
-                                } else {
-                                    event.accepted = false;
-                                }
-                            }
-                            Keys.onRightPressed: {
-                                if (text == "") {
-                                    root.userSelect.incrementCurrentIndex();
-                                } else {
-                                    event.accepted = false;
-                                }
-                            }
-                        }
-
-                        PlasmaComponents.Button {
-                            Layout.minimumWidth: passwordInput.width
-                            text: block.mainItem.model.get(block.mainItem.selectedIndex)["ButtonLabel"]
-                            enabled: !authenticator.graceLocked
-                            onClicked: switch(block.mainItem.model.get(block.mainItem.selectedIndex)["ButtonAction"]) {
-                                case "unlock":
-                                    unlockFunction();
-                                    break;
-                                case "newSession":
-                                    sessionsModel.startNewSession();
-                                    break;
-                                case "changeSession":
-                                    stackView.push({item:changeSessionComponent, immediate: true})
-                                    break;
-                            }
-                        }
-
-                        Connections {
-                            target: root
-                            onClearPassword: {
-                                passwordInput.selectAll();
-                                passwordInput.forceActiveFocus();
-                            }
-                        }
-                        Keys.onLeftPressed: {
-                            root.userSelect.decrementCurrentIndex();
-                        }
-                        Keys.onRightPressed: {
-                            root.userSelect.incrementCurrentIndex();
-                        }
-                    }
-                }
-
-                Component {
-                    id: changeSessionComponent
-                    ArchBlock {
-                        id: selectSessionBlock
-
-                        Action {
-                            onTriggered: stackView.pop({immediate: true})
-                            shortcut: "Escape"
-                        }
-
-                        main: UserSelect {
-                            id: sessionSelect
-
-                            model: sessionsModel.model
-                            delegate: UserDelegate {
-                                name: i18nd("plasma_lookandfeel_org.kde.lookandfeel","%1 (%2)", model.session, model.location)
-                                userName: model.session
-                                iconSource: "user-identity"
-                                width: ListView.view.userItemWidth
-                                faceSize: ListView.view.userFaceSize
-
-                                onClicked: {
-                                    ListView.view.currentIndex = index;
-                                    ListView.view.forceActiveFocus();
-                                }
-                            }
-                        }
-
-                        controls: Item {
-                            height: childrenRect.height
-                            RowLayout {
-                                anchors.centerIn: parent
-                                PlasmaComponents.Button {
-                                    text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Cancel")
-                                    onClicked: stackView.pop({immediate: true})
-                                }
-                                PlasmaComponents.Button {
-                                    text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Change Session")
-                                    onClicked: sessionsModel.activateSession(selectSessionBlock.mainItem.selectedIndex)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+    Component.onCompleted: {
+        // version support checks
+        if (root.interfaceVersion < 1) {
+            // ksmserver of 5.4, with greeter of 5.5
+            root.viewVisible = true;
         }
     }
 }
