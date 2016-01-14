@@ -23,7 +23,8 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.1
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.kscreenlocker 1.0
+import org.kde.plasma.private.sessions 2.0
+// import org.kde.kscreenlocker 1.0
 import org.kde.plasma.workspace.keyboardlayout 1.0
 import "../components"
 
@@ -62,8 +63,8 @@ Image {
             root.notification = err;
         }
     }
-    Sessions {
-        id: sessions
+    SessionsModel {
+        id: sessionsModel
     }
 
     PlasmaCore.DataSource {
@@ -115,7 +116,7 @@ Image {
                                         "ButtonLabel": i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Unlock"),
                                         "ButtonAction": "unlock"
                         })
-                        if(sessions.startNewSessionSupported) {
+                        if(sessionsModel.startNewSessionSupported) {
                             users.append({  "realName": i18nd("plasma_lookandfeel_org.kde.lookandfeel", "New Session"),
                                             "icon": "system-log-out", //TODO Need an icon for new session
                                             "showPassword": false,
@@ -123,7 +124,7 @@ Image {
                                             "ButtonAction": "newSession"
                             })
                         }
-                        if(sessions.switchUserSupported) {
+                        if(sessionsModel.switchUserSupported) {
                             users.append({  "realName": i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Change Session"),
                                             "icon": "system-switch-user",
                                             "showPassword": false,
@@ -196,7 +197,7 @@ Image {
                                     unlockFunction();
                                     break;
                                 case "newSession":
-                                    sessions.startNewSession();
+                                    sessionsModel.startNewSession();
                                     break;
                                 case "changeSession":
                                     stackView.push({item:changeSessionComponent, immediate: true})
@@ -233,7 +234,7 @@ Image {
                         main: UserSelect {
                             id: sessionSelect
 
-                            model: sessions.model
+                            model: sessionsModel.model
                             delegate: UserDelegate {
                                 name: i18nd("plasma_lookandfeel_org.kde.lookandfeel","%1 (%2)", model.session, model.location)
                                 userName: model.session
@@ -258,7 +259,7 @@ Image {
                                 }
                                 PlasmaComponents.Button {
                                     text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Change Session")
-                                    onClicked: sessions.activateSession(selectSessionBlock.mainItem.selectedIndex)
+                                    onClicked: sessionsModel.activateSession(selectSessionBlock.mainItem.selectedIndex)
                                 }
                             }
                         }
