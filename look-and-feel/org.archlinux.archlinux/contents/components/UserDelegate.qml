@@ -31,7 +31,7 @@ Item {
     property string name
     property string userName
     property string iconSource
-    property int faceSize: frame.width
+    property int faceSize: 16 * 8
 
     signal clicked()
 

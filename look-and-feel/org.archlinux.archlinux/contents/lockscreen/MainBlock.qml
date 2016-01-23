@@ -62,14 +62,14 @@ ArchBlock {
                 })
                 if (sessionsModel.canStartNewSession) {
                     users.append({realName: i18nd("plasma_lookandfeel_org.kde.lookandfeel", "New Session"),
-                                    icon: "system-log-out", //TODO Need an icon for new session
+                                    icon: "/usr/share/plasma/look-and-feel/org.archlinux.archlinux/contents/components/artwork/new-session.svgz",
                                     ButtonLabel: i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Create Session"),
                                     ButtonAction: "newSession"
                     })
                 }
                 if (sessionsModel.canSwitchUser && sessionsModel.count > 0) {
                     users.append({realName: i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Change Session"),
-                                    icon: "system-switch-user",
+                                    icon: "/usr/share/plasma/look-and-feel/org.archlinux.archlinux/contents/components/artwork/switch-user.svgz",
                                     ButtonLabel: i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Change Session..."),
                                     ButtonAction: "changeSession"
                     })

@@ -28,6 +28,7 @@ FocusScope {
     property alias model: usersList.model
     property alias selectedUser: usersList.selectedUser
     property alias selectedIndex: usersList.currentIndex
+    property alias selectedItem: usersList.currentItem
     property alias delegate: usersList.delegate
     property alias notification: notificationLabel.text
 
@@ -45,15 +46,6 @@ FocusScope {
         id: usersList
 
         focus: true
-
-        Rectangle {//debug
-            visible: debug
-            border.color: "red"
-            border.width: 1
-            anchors.fill: parent
-            color: "#00000000"
-            z:-1000
-        }
 
         anchors {
             top: parent.top
