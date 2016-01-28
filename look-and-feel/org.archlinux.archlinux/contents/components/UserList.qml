@@ -23,7 +23,7 @@ ListView {
     id: view
     readonly property string selectedUser: currentItem ? currentItem.userName : ""
     readonly property int userItemWidth: 18 * 8
-    readonly property int userItemHeight: 18 * 8
+    readonly property int userItemHeight: 18 * 7
     readonly property int userFaceSize: 18 * 6
 
     /*
@@ -39,6 +39,7 @@ ListView {
         userName: model.name || ""
         iconSource: model.icon ? model.icon : "user-identity"
         width: ListView.view.userItemWidth
+        height: ListView.view.userItemHeight
         faceSize: ListView.view.userFaceSize
 
         onClicked: {
