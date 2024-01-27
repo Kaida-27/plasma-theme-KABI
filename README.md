@@ -1,2 +1,1 @@
 
-![Preview](https://raw.githubusercontent.com/Guidobelix/plasma-theme-archlinux/master/look-and-feel/org.archlinux.archlinux/contents/previews/preview.png "Preview") ![Splash](https://raw.githubusercontent.com/Guidobelix/plasma-theme-archlinux/master/look-and-feel/org.archlinux.archlinux/contents/previews/splash.png "Splash") ![Lockscreen](https://raw.githubusercontent.com/Guidobelix/plasma-theme-archlinux/master/look-and-feel/org.archlinux.archlinux/contents/previews/lockscreen.png "Lockscreen") 
